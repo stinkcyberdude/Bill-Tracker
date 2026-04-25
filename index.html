@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -11,7 +10,7 @@
   <title>1K Tracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#080810;--surface:#0f0f1a;--surface2:#141425;--border:#1e1e35;--green:#00e676;--green-dim:#00e67622;--red:#ff4d6d;--red-dim:#ff4d6d22;--yellow:#ffd166;--yellow-dim:#ffd16622;--text:#e8e8f0;--muted:#555570;--font:'Space Mono',monospace;--display:'Bebas Neue',sans-serif;}
+    :root{--bg:#080810;--surface:#0f0f1a;--surface2:#141425;--border:#1e1e35;--green:#00e676;--green-dim:#00e67622;--red:#ff4d6d;--red-dim:#ff4d6d22;--yellow:#ffd166;--yellow-dim:#ffd16622;--blue:#38bdf8;--blue-dim:#38bdf822;--text:#e8e8f0;--muted:#555570;--font:'Space Mono',monospace;--display:'Bebas Neue',sans-serif;}
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     html,body{height:100%;background:var(--bg);overscroll-behavior:none;}
     body{font-family:var(--font);color:var(--text);font-size:13px;}
@@ -48,6 +47,20 @@
     .pocket-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
     .pocket-val{font-family:var(--display);font-size:28px;letter-spacing:1px;}
     .pocket-sub{font-size:9px;margin-top:3px;letter-spacing:1px;}
+    .true-balance-card{background:var(--surface);border:1px solid var(--blue);border-radius:12px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden;}
+    .true-balance-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),transparent);}
+    .true-balance-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+    .true-balance-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);}
+    .true-balance-edit{background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:var(--font);font-size:8px;letter-spacing:1px;padding:4px 8px;cursor:pointer;}
+    .true-balance-edit:active{color:var(--text);}
+    .true-balance-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+    .tb-item{background:var(--surface2);border-radius:8px;padding:9px 10px;}
+    .tb-item-label{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+    .tb-item-val{font-family:var(--display);font-size:18px;letter-spacing:1px;color:var(--blue);}
+    .true-balance-divider{height:1px;background:var(--border);margin-bottom:12px;}
+    .true-balance-result{display:flex;justify-content:space-between;align-items:center;}
+    .true-balance-result-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+    .true-balance-result-val{font-family:var(--display);font-size:26px;letter-spacing:1px;}
     .section-header{display:flex;align-items:center;justify-content:space-between;margin:18px 0 8px;}
     .section-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
     .section-amt{font-family:var(--display);font-size:15px;letter-spacing:1px;}
@@ -80,17 +93,20 @@
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:flex;align-items:flex-end;z-index:100;backdrop-filter:blur(6px);}
     .sheet{width:100%;max-width:520px;margin:0 auto;background:var(--surface);border-radius:18px 18px 0 0;padding:22px 18px;padding-bottom:max(30px,env(safe-area-inset-bottom,30px));border:1px solid var(--border);border-bottom:none;}
     .sheet-title{font-family:var(--display);font-size:18px;letter-spacing:3px;color:var(--green);margin-bottom:16px;}
+    .sheet-title.blue{color:var(--blue);}
     .sheet-tabs{display:flex;gap:6px;margin-bottom:14px;}
     .sheet-tab{flex:1;padding:8px;text-align:center;border-radius:8px;font-family:var(--font);font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);background:none;color:var(--muted);transition:all 0.2s;}
     .sheet-tab.active{background:var(--green-dim);border-color:var(--green);color:var(--green);}
     .form{display:flex;flex-direction:column;gap:9px;}
     .input{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:var(--text);font-family:var(--font);font-size:13px;width:100%;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
     .input:focus{border-color:var(--green);}
+    .input.blue-focus:focus{border-color:var(--blue);}
     .input::placeholder{color:var(--muted);}
     select.input{cursor:pointer;}
     .btn-row{display:flex;gap:8px;margin-top:4px;}
     .btn-primary{flex:2;background:var(--green);color:#000;border:none;border-radius:8px;padding:12px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.15s;}
     .btn-primary:active{opacity:0.85;transform:scale(0.98);}
+    .btn-primary.blue{background:var(--blue);}
     .btn-ghost{flex:1;background:none;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--font);font-size:12px;cursor:pointer;}
     .btn-ghost:active{color:var(--text);}
     .job-types{display:flex;flex-wrap:wrap;gap:5px;}
@@ -126,96 +142,121 @@
       <div style="font-size:10px;color:var(--muted)" id="monthSub"></div>
     </div>
 
-```
-<!-- OVERVIEW -->
-<div id="viewOverview">
-  <div class="hero-card">
-    <div class="hero-main">
-      <div class="hero-item">
-        <div class="hero-label">Earned</div>
-        <div class="hero-val" id="ovEarned" style="color:var(--green)">$0</div>
+    <!-- OVERVIEW -->
+    <div id="viewOverview">
+      <div class="hero-card">
+        <div class="hero-main">
+          <div class="hero-item">
+            <div class="hero-label">Earned</div>
+            <div class="hero-val" id="ovEarned" style="color:var(--green)">$0</div>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-item right">
+            <div class="hero-label">Total Out</div>
+            <div class="hero-val" id="ovAllOut" style="color:var(--red)">$0</div>
+          </div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-box-label">Rec. Bills</div><div class="stat-box-val" id="ovRecBills" style="color:var(--yellow)">$0</div></div>
+          <div class="stat-box"><div class="stat-box-label">Expenses</div><div class="stat-box-val" id="ovOneTime" style="color:var(--yellow)">$0</div></div>
+          <div class="stat-box"><div class="stat-box-label">Bills Paid</div><div class="stat-box-val" id="ovBillsPaid" style="color:var(--green)">$0</div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Bills covered</span><span id="ovPct">0%</span></div>
+          <div class="progress-bar"><div class="progress-fill" id="ovBar" style="width:0%"></div></div>
+        </div>
       </div>
-      <div class="hero-divider"></div>
-      <div class="hero-item right">
-        <div class="hero-label">Total Out</div>
-        <div class="hero-val" id="ovAllOut" style="color:var(--red)">$0</div>
+
+      <div class="pocket-card" id="pocketCard" style="background:var(--green-dim);border-color:#00e67644">
+        <div>
+          <div class="pocket-label" style="color:var(--muted)">In Your Pocket</div>
+          <div class="pocket-val" id="pocketVal" style="color:var(--green)">$0</div>
+          <div class="pocket-sub" id="pocketSub" style="color:var(--muted)">after all bills & expenses</div>
+        </div>
+        <div style="font-size:32px">💰</div>
+      </div>
+
+      <!-- TRUE BALANCE CARD -->
+      <div class="true-balance-card">
+        <div class="true-balance-header">
+          <div class="true-balance-title">💵 True Balance</div>
+          <button class="true-balance-edit" onclick="openCashModal()">EDIT CASH</button>
+        </div>
+        <div class="true-balance-grid">
+          <div class="tb-item">
+            <div class="tb-item-label">Cash on Hand</div>
+            <div class="tb-item-val" id="tbCash">$0</div>
+          </div>
+          <div class="tb-item">
+            <div class="tb-item-label">In the Bank</div>
+            <div class="tb-item-val" id="tbBank">$0</div>
+          </div>
+        </div>
+        <div class="true-balance-divider"></div>
+        <div class="true-balance-result">
+          <div>
+            <div class="true-balance-result-label">Real Position</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:2px;letter-spacing:1px" id="tbBreakdown">tap edit cash to set your balances</div>
+          </div>
+          <div style="text-align:right">
+            <div class="true-balance-result-val" id="tbReal">$0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header"><div class="section-title">Recent Activity</div></div>
+      <div id="ovRecent"></div>
+    </div>
+
+    <!-- JOBS -->
+    <div id="viewEarnings" class="hidden">
+      <div class="section-header">
+        <div class="section-title">Jobs This Month</div>
+        <div class="section-amt" id="earnTotal" style="color:var(--green)">$0.00</div>
+      </div>
+      <div id="earnList"></div>
+      <div id="earnEmpty" class="empty hidden"><div class="empty-icon">🔧</div><div class="empty-text">No jobs logged yet.</div></div>
+    </div>
+
+    <!-- BILLS -->
+    <div id="viewBills" class="hidden">
+      <div class="section-header">
+        <div class="section-title">Recurring Bills</div>
+        <div class="section-amt" id="billsTotal" style="color:var(--red)">$0.00</div>
+      </div>
+      <div id="billsList"></div>
+      <div id="billsEmpty" class="empty hidden"><div class="empty-icon">📋</div><div class="empty-text">No recurring bills yet.</div></div>
+      <div class="summary-bar hidden" id="billsSummary">
+        <span>PAID: <span id="billsSumPaid" style="color:var(--green)">$0</span></span>
+        <span>STILL OWE: <span id="billsSumOwed" style="color:var(--yellow)">$0</span></span>
       </div>
     </div>
-    <div class="stat-grid">
-      <div class="stat-box"><div class="stat-box-label">Rec. Bills</div><div class="stat-box-val" id="ovRecBills" style="color:var(--yellow)">$0</div></div>
-      <div class="stat-box"><div class="stat-box-label">Expenses</div><div class="stat-box-val" id="ovOneTime" style="color:var(--yellow)">$0</div></div>
-      <div class="stat-box"><div class="stat-box-label">Bills Paid</div><div class="stat-box-val" id="ovBillsPaid" style="color:var(--green)">$0</div></div>
+
+    <!-- EXPENSES -->
+    <div id="viewExpenses" class="hidden">
+      <div class="section-header">
+        <div class="section-title">Expenses This Month</div>
+        <div class="section-amt" id="expTotal" style="color:var(--red)">$0.00</div>
+      </div>
+      <div id="expList"></div>
+      <div id="expEmpty" class="empty hidden"><div class="empty-icon">🧾</div><div class="empty-text">No expenses logged yet.</div></div>
     </div>
-    <div class="progress-wrap">
-      <div class="progress-label"><span>Bills covered</span><span id="ovPct">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="ovBar" style="width:0%"></div></div>
+
+    <!-- CASH FLOW -->
+    <div id="viewFlow" class="hidden">
+      <div class="section-header">
+        <div class="section-title">Full Money Log</div>
+        <div class="section-amt" id="flowBalance">$0</div>
+      </div>
+      <div id="flowList"></div>
+      <div id="flowEmpty" class="empty hidden"><div class="empty-icon">📊</div><div class="empty-text">Nothing logged this month.</div></div>
     </div>
   </div>
-  <div class="pocket-card" id="pocketCard" style="background:var(--green-dim);border-color:#00e67644">
-    <div>
-      <div class="pocket-label" style="color:var(--muted)">In Your Pocket</div>
-      <div class="pocket-val" id="pocketVal" style="color:var(--green)">$0</div>
-      <div class="pocket-sub" id="pocketSub" style="color:var(--muted)">after all bills & expenses</div>
-    </div>
-    <div style="font-size:32px">💰</div>
-  </div>
-  <div class="section-header"><div class="section-title">Recent Activity</div></div>
-  <div id="ovRecent"></div>
+
+  <button class="fab" id="fabBtn">+</button>
 </div>
 
-<!-- JOBS -->
-<div id="viewEarnings" class="hidden">
-  <div class="section-header">
-    <div class="section-title">Jobs This Month</div>
-    <div class="section-amt" id="earnTotal" style="color:var(--green)">$0.00</div>
-  </div>
-  <div id="earnList"></div>
-  <div id="earnEmpty" class="empty hidden"><div class="empty-icon">🔧</div><div class="empty-text">No jobs logged yet.</div></div>
-</div>
-
-<!-- BILLS -->
-<div id="viewBills" class="hidden">
-  <div class="section-header">
-    <div class="section-title">Recurring Bills</div>
-    <div class="section-amt" id="billsTotal" style="color:var(--red)">$0.00</div>
-  </div>
-  <div id="billsList"></div>
-  <div id="billsEmpty" class="empty hidden"><div class="empty-icon">📋</div><div class="empty-text">No recurring bills yet.</div></div>
-  <div class="summary-bar hidden" id="billsSummary">
-    <span>PAID: <span id="billsSumPaid" style="color:var(--green)">$0</span></span>
-    <span>STILL OWE: <span id="billsSumOwed" style="color:var(--yellow)">$0</span></span>
-  </div>
-</div>
-
-<!-- EXPENSES -->
-<div id="viewExpenses" class="hidden">
-  <div class="section-header">
-    <div class="section-title">Expenses This Month</div>
-    <div class="section-amt" id="expTotal" style="color:var(--red)">$0.00</div>
-  </div>
-  <div id="expList"></div>
-  <div id="expEmpty" class="empty hidden"><div class="empty-icon">🧾</div><div class="empty-text">No expenses logged yet.</div></div>
-</div>
-
-<!-- CASH FLOW -->
-<div id="viewFlow" class="hidden">
-  <div class="section-header">
-    <div class="section-title">Full Money Log</div>
-    <div class="section-amt" id="flowBalance">$0</div>
-  </div>
-  <div id="flowList"></div>
-  <div id="flowEmpty" class="empty hidden"><div class="empty-icon">📊</div><div class="empty-text">Nothing logged this month.</div></div>
-</div>
-```
-
-  </div>
-
-<button class="fab" id="fabBtn">+</button>
-
-</div>
-
-<!-- MODAL -->
-
+<!-- MAIN MODAL -->
 <div class="overlay hidden" id="modal">
   <div class="sheet">
     <div class="sheet-title" id="sheetTitle">LOG JOB</div>
@@ -224,81 +265,90 @@
       <button class="sheet-tab" id="st1" onclick="switchSheet('bill')">🔁 Bill</button>
       <button class="sheet-tab" id="st2" onclick="switchSheet('expense')">🧾 Expense</button>
     </div>
-
-```
-<!-- JOB FORM -->
-<div id="formEarn" class="form">
-  <div class="input-label">Job Type</div>
-  <div class="job-types">
-    <button class="job-chip selected" onclick="selectJob(this,'Screen Repair')">Screen</button>
-    <button class="job-chip" onclick="selectJob(this,'Back Glass')">Back Glass</button>
-    <button class="job-chip" onclick="selectJob(this,'Resale')">Resale</button>
-    <button class="job-chip" onclick="selectJob(this,'Battery')">Battery</button>
-    <button class="job-chip" onclick="selectJob(this,'Other Repair')">Other</button>
-  </div>
-  <input class="input" id="earnDesc" placeholder="Notes (optional)" />
-  <input class="input" id="earnAmount" type="number" placeholder="Amount (e.g. 80)" inputmode="decimal" />
-  <input class="input" id="earnDate" type="date" />
-  <div class="btn-row">
-    <button class="btn-ghost" onclick="closeModal()">Cancel</button>
-    <button class="btn-primary" onclick="addEarning()">Log Job</button>
-  </div>
-</div>
-
-<!-- BILL FORM -->
-<div id="formBill" class="form hidden">
-  <input class="input" id="billName" placeholder="Bill name (e.g. BTC Power)" />
-  <input class="input" id="billAmount" type="number" placeholder="Amount" inputmode="decimal" />
-  <input class="input" id="billDue" placeholder="Due date (e.g. 15th of month)" />
-  <select class="input" id="billCat">
-    <option>Utilities</option><option>Rent/Mortgage</option><option>Insurance</option>
-    <option>Phone</option><option>Internet</option><option>Subscriptions</option>
-    <option>Transport</option><option>Business</option><option>Other</option>
-  </select>
-  <div class="btn-row">
-    <button class="btn-ghost" onclick="closeModal()">Cancel</button>
-    <button class="btn-primary" onclick="addBill()">Add Bill</button>
-  </div>
-</div>
-
-<!-- EXPENSE FORM -->
-<div id="formExpense" class="form hidden">
-  <input class="input" id="expName" placeholder="What was it? (e.g. drinks, car fix, part)" />
-  <input class="input" id="expAmount" type="number" placeholder="Amount" inputmode="decimal" />
-  <input class="input" id="expDate" type="date" />
-  <select class="input" id="expCat">
-    <option>Food & Drinks</option>
-    <option>Going Out</option>
-    <option>Parts & Inventory</option>
-    <option>Tools & Equipment</option>
-    <option>Transport</option>
-    <option>Personal</option>
-    <option>Emergency</option>
-    <option>Other</option>
-  </select>
-  <div class="btn-row">
-    <button class="btn-ghost" onclick="closeModal()">Cancel</button>
-    <button class="btn-primary" onclick="addExpense()">Add Expense</button>
+    <div id="formEarn" class="form">
+      <div class="input-label">Job Type</div>
+      <div class="job-types">
+        <button class="job-chip selected" onclick="selectJob(this,'Screen Repair')">Screen</button>
+        <button class="job-chip" onclick="selectJob(this,'Back Glass')">Back Glass</button>
+        <button class="job-chip" onclick="selectJob(this,'Resale')">Resale</button>
+        <button class="job-chip" onclick="selectJob(this,'Battery')">Battery</button>
+        <button class="job-chip" onclick="selectJob(this,'Other Repair')">Other</button>
+      </div>
+      <input class="input" id="earnDesc" placeholder="Notes (optional)" />
+      <input class="input" id="earnAmount" type="number" placeholder="Amount (e.g. 80)" inputmode="decimal" />
+      <input class="input" id="earnDate" type="date" />
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="addEarning()">Log Job</button>
+      </div>
+    </div>
+    <div id="formBill" class="form hidden">
+      <input class="input" id="billName" placeholder="Bill name (e.g. BTC Power)" />
+      <input class="input" id="billAmount" type="number" placeholder="Amount" inputmode="decimal" />
+      <input class="input" id="billDue" placeholder="Due date (e.g. 15th of month)" />
+      <select class="input" id="billCat">
+        <option>Utilities</option><option>Rent/Mortgage</option><option>Insurance</option>
+        <option>Phone</option><option>Internet</option><option>Subscriptions</option>
+        <option>Transport</option><option>Business</option><option>Other</option>
+      </select>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="addBill()">Add Bill</button>
+      </div>
+    </div>
+    <div id="formExpense" class="form hidden">
+      <input class="input" id="expName" placeholder="What was it? (e.g. drinks, car fix, part)" />
+      <input class="input" id="expAmount" type="number" placeholder="Amount" inputmode="decimal" />
+      <input class="input" id="expDate" type="date" />
+      <select class="input" id="expCat">
+        <option>Food & Drinks</option><option>Going Out</option><option>Parts & Inventory</option>
+        <option>Tools & Equipment</option><option>Transport</option><option>Personal</option>
+        <option>Emergency</option><option>Other</option>
+      </select>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="addExpense()">Add Expense</button>
+      </div>
+    </div>
   </div>
 </div>
-```
 
+<!-- CASH MODAL -->
+<div class="overlay hidden" id="cashModal">
+  <div class="sheet">
+    <div class="sheet-title blue">UPDATE CASH</div>
+    <div class="form">
+      <div class="input-label">Cash on Hand</div>
+      <input class="input blue-focus" id="cashOnHand" type="number" placeholder="e.g. 2045" inputmode="decimal" />
+      <div class="input-label">In the Bank</div>
+      <input class="input blue-focus" id="cashBank" type="number" placeholder="e.g. 500" inputmode="decimal" />
+      <div class="btn-row" style="margin-top:4px">
+        <button class="btn-ghost" onclick="closeCashModal()">Cancel</button>
+        <button class="btn-primary blue" onclick="saveCash()">Save</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const KEY="jj-1k-v3";
+const CASH_KEY="jj-1k-cash";
 const JOB_ICONS={"Screen Repair":"📱","Back Glass":"🔧","Resale":"💎","Battery":"🔋","Other Repair":"⚙️"};
 const EXP_ICONS={"Food & Drinks":"🍹","Going Out":"🎉","Parts & Inventory":"📦","Tools & Equipment":"🔩","Transport":"🚗","Personal":"👤","Emergency":"🚨","Other":"🧾"};
 const CAT_COLORS={"Utilities":"#f59e0b","Rent/Mortgage":"#ef4444","Insurance":"#8b5cf6","Phone":"#3b82f6","Internet":"#06b6d4","Subscriptions":"#ec4899","Transport":"#f97316","Business":"#6366f1","Other":"#94a3b8"};
 
 let state={earnings:[],bills:[],expenses:[]};
+let cash={onHand:0,bank:0};
 let curMonth=new Date().getMonth(),curYear=new Date().getFullYear();
 let curTab="overview",selJob="Screen Repair";
 
 function save(){localStorage.setItem(KEY,JSON.stringify({...state,month:curMonth,year:curYear}));}
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||"{}");state.earnings=d.earnings||[];state.bills=d.bills||[];state.expenses=d.expenses||[];if(d.month!=null)curMonth=d.month;if(d.year!=null)curYear=d.year;}catch(e){}}
+function saveCashData(){localStorage.setItem(CASH_KEY,JSON.stringify(cash));}
+function load(){
+  try{const d=JSON.parse(localStorage.getItem(KEY)||"{}");state.earnings=d.earnings||[];state.bills=d.bills||[];state.expenses=d.expenses||[];if(d.month!=null)curMonth=d.month;if(d.year!=null)curYear=d.year;}catch(e){}
+  try{const c=JSON.parse(localStorage.getItem(CASH_KEY)||"{}");cash.onHand=parseFloat(c.onHand||0);cash.bank=parseFloat(c.bank||0);}catch(e){}
+}
 function fmt(v){return"$"+Number(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",");}
 function fmtS(v){return(v<0?"-$":"$")+Math.abs(Math.round(v)).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");}
 function mk(){return`${curYear}-${curMonth}`;}
@@ -317,10 +367,11 @@ function render(){
   const allOut=recBills+oneTime;
   const pocket=earned-allOut;
   const pct=recBills>0?Math.min(100,(recPaid/recBills)*100):0;
+  const totalCash=cash.onHand+cash.bank;
+  const trueBalance=totalCash-recOwed;
 
   document.getElementById("monthLabel").textContent=`${MONTHS[curMonth]} ${curYear}`;
   document.getElementById("monthSub").textContent=`${me.length} job${me.length!==1?"s":""}`;
-
   document.getElementById("ovEarned").textContent=fmtS(earned);
   document.getElementById("ovAllOut").textContent=fmtS(allOut);
   document.getElementById("ovRecBills").textContent=fmtS(recBills);
@@ -330,19 +381,21 @@ function render(){
   document.getElementById("ovBar").style.width=pct+"%";
   document.getElementById("ovBar").style.background=pct>=100?"var(--green)":pct>50?"var(--yellow)":"var(--red)";
 
-  const pc=document.getElementById("pocketCard");
-  const pv=document.getElementById("pocketVal");
-  const ps=document.getElementById("pocketSub");
+  const pc=document.getElementById("pocketCard"),pv=document.getElementById("pocketVal"),ps=document.getElementById("pocketSub");
   pv.textContent=fmtS(pocket);
   if(pocket>0){pc.style.background="var(--green-dim)";pc.style.borderColor="#00e67644";pv.style.color="var(--green)";ps.textContent="after all bills & expenses";}
   else if(pocket===0){pc.style.background="var(--surface)";pc.style.borderColor="var(--border)";pv.style.color="var(--yellow)";ps.textContent="breaking even";}
   else{pc.style.background="var(--red-dim)";pc.style.borderColor="#ff4d6d44";pv.style.color="var(--red)";ps.textContent=fmtS(Math.abs(pocket))+" short";}
 
-  const allActivity=[
-    ...me.map(e=>({...e,_type:"earn"})),
-    ...mb.filter(b=>b.paid).map(b=>({...b,_type:"bill"})),
-    ...mx.map(e=>({...e,_type:"expense"}))
-  ].sort((a,b)=>b.id.localeCompare(a.id)).slice(0,6);
+  document.getElementById("tbCash").textContent=fmtS(cash.onHand);
+  document.getElementById("tbBank").textContent=fmtS(cash.bank);
+  const tbReal=document.getElementById("tbReal");
+  tbReal.textContent=fmtS(trueBalance);
+  tbReal.style.color=trueBalance>=0?"var(--blue)":"var(--red)";
+  document.getElementById("tbBreakdown").textContent=
+    recOwed>0?`${fmtS(totalCash)} total − ${fmtS(recOwed)} still owed`:`${fmtS(totalCash)} total · all bills clear ✓`;
+
+  const allActivity=[...me.map(e=>({...e,_type:"earn"})),...mb.filter(b=>b.paid).map(b=>({...b,_type:"bill"})),...mx.map(e=>({...e,_type:"expense"}))].sort((a,b)=>b.id.localeCompare(a.id)).slice(0,6);
   const recentEl=document.getElementById("ovRecent");
   if(allActivity.length===0){recentEl.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-text">Nothing logged this month.</div></div>`;}
   else{recentEl.innerHTML=allActivity.map(a=>a._type==="earn"?earnRowHTML(a,true):a._type==="expense"?expRowHTML(a,true):billRowHTML(a,true)).join("");attachListeners(recentEl);}
@@ -365,34 +418,13 @@ function render(){
   const flowEl=document.getElementById("flowList"),flowEmp=document.getElementById("flowEmpty");
   const fb=document.getElementById("flowBalance");
   fb.textContent=fmtS(pocket);fb.style.color=pocket>=0?"var(--green)":"var(--red)";
-  const allFlow=[
-    ...me.map(e=>({id:e.id,name:e.jobType+(e.desc?" — "+e.desc:""),date:e.date||"",amount:parseFloat(e.amount||0),type:"in"})),
-    ...mb.filter(b=>b.paid).map(b=>({id:b.id+"p",name:b.name+" (bill paid)",date:"",amount:-parseFloat(b.amount||0),type:"out"})),
-    ...mx.map(e=>({id:e.id,name:e.name+" ("+e.category+")",date:e.date||"",amount:-parseFloat(e.amount||0),type:"out"}))
-  ].sort((a,b)=>a.id.localeCompare(b.id));
+  const allFlow=[...me.map(e=>({id:e.id,name:e.jobType+(e.desc?" — "+e.desc:""),date:e.date||"",amount:parseFloat(e.amount||0),type:"in"})),...mb.filter(b=>b.paid).map(b=>({id:b.id+"p",name:b.name+" (bill paid)",date:"",amount:-parseFloat(b.amount||0),type:"out"})),...mx.map(e=>({id:e.id,name:e.name+" ("+e.category+")",date:e.date||"",amount:-parseFloat(e.amount||0),type:"out"}))].sort((a,b)=>a.id.localeCompare(b.id));
   if(allFlow.length===0){flowEl.innerHTML="";flowEmp.classList.remove("hidden");}
-  else{
-    flowEmp.classList.add("hidden");
-    let running=0;
-    flowEl.innerHTML=allFlow.map(item=>{
-      running+=item.amount;
-      const isIn=item.amount>0;
-      return`<div class="cf-row">
-        <span class="cf-badge" style="background:${isIn?"var(--green-dim)":"var(--red-dim)"};color:${isIn?"var(--green)":"var(--red)"}">${isIn?"IN":"OUT"}</span>
-        <div class="cf-info"><div class="cf-name">${item.name}</div>${item.date?`<div class="cf-date">${fmtDate(item.date)}</div>`:""}</div>
-        <div style="text-align:right;flex-shrink:0">
-          <div class="cf-amount" style="color:${isIn?"var(--green)":"var(--red)"}">${isIn?"+":"-"}${fmt(Math.abs(item.amount))}</div>
-          <div class="cf-running">${fmtS(running)} left</div>
-        </div>
-      </div>`;
-    }).join("");
-  }
+  else{flowEmp.classList.add("hidden");let running=0;flowEl.innerHTML=allFlow.map(item=>{running+=item.amount;const isIn=item.amount>0;return`<div class="cf-row"><span class="cf-badge" style="background:${isIn?"var(--green-dim)":"var(--red-dim)"};color:${isIn?"var(--green)":"var(--red)"}">${isIn?"IN":"OUT"}</span><div class="cf-info"><div class="cf-name">${item.name}</div>${item.date?`<div class="cf-date">${fmtDate(item.date)}</div>`:""}</div><div style="text-align:right;flex-shrink:0"><div class="cf-amount" style="color:${isIn?"var(--green)":"var(--red)"}">${isIn?"+":"-"}${fmt(Math.abs(item.amount))}</div><div class="cf-running">${fmtS(running)} left</div></div></div>`;}).join("");}
 }
 
 function earnRowHTML(e,compact){return`<div class="entry-row"><div class="entry-icon" style="background:var(--green-dim)">${JOB_ICONS[e.jobType]||"💵"}</div><div class="entry-info"><div class="entry-name">${e.jobType}${e.desc?" — "+e.desc:""}</div>${e.date?`<div class="entry-meta">${fmtDate(e.date)}</div>`:""}</div><div class="entry-amount" style="color:var(--green)">${fmt(e.amount)}</div>${!compact?`<button class="del-btn" data-type="earn" data-id="${e.id}">×</button>`:""}</div>`;}
-
 function expRowHTML(e,compact){return`<div class="entry-row"><div class="entry-icon" style="background:var(--red-dim)">${EXP_ICONS[e.category]||"🧾"}</div><div class="entry-info"><div class="entry-name">${e.name}</div><div class="entry-meta">${e.category}${e.date?" · "+fmtDate(e.date):""}</div></div><div class="entry-amount" style="color:var(--red)">-${fmt(e.amount)}</div>${!compact?`<button class="del-btn" data-type="expense" data-id="${e.id}">×</button>`:""}</div>`;}
-
 function billRowHTML(b,compact){const color=CAT_COLORS[b.category]||"#555";return`<div class="entry-row${b.paid?" paid":""}"${!compact?` data-bill-id="${b.id}"`:""}>
   ${!compact?`<button class="check-btn${b.paid?" checked":""}">${b.paid?"✓":""}</button>`:""}
   <div class="entry-icon" style="background:${color}22;font-size:8px;color:${color};font-family:var(--font);letter-spacing:0">${b.category.slice(0,3).toUpperCase()}</div>
@@ -402,28 +434,18 @@ function billRowHTML(b,compact){const color=CAT_COLORS[b.category]||"#555";retur
 </div>`;}
 
 function attachListeners(el){
-  el.querySelectorAll(".del-btn").forEach(btn=>{
-    btn.addEventListener("click",ev=>{
-      ev.stopPropagation();
-      if(!confirm("Remove this entry?"))return;
-      const t=btn.dataset.type,id=btn.dataset.id;
-      if(t==="earn")state.earnings=state.earnings.filter(e=>e.id!==id);
-      else if(t==="bill")state.bills=state.bills.filter(b=>b.id!==id);
-      else if(t==="expense")state.expenses=state.expenses.filter(e=>e.id!==id);
-      save();render();
-    });
-  });
-  el.querySelectorAll("[data-bill-id]").forEach(row=>{
-    row.addEventListener("click",e=>{if(e.target.classList.contains("del-btn")||e.target.classList.contains("check-btn"))return;toggleBill(row.dataset.billId);});
-    const cb=row.querySelector(".check-btn");
-    if(cb)cb.addEventListener("click",ev=>{ev.stopPropagation();toggleBill(row.dataset.billId);});
-  });
+  el.querySelectorAll(".del-btn").forEach(btn=>{btn.addEventListener("click",ev=>{ev.stopPropagation();if(!confirm("Remove this entry?"))return;const t=btn.dataset.type,id=btn.dataset.id;if(t==="earn")state.earnings=state.earnings.filter(e=>e.id!==id);else if(t==="bill")state.bills=state.bills.filter(b=>b.id!==id);else if(t==="expense")state.expenses=state.expenses.filter(e=>e.id!==id);save();render();});});
+  el.querySelectorAll("[data-bill-id]").forEach(row=>{row.addEventListener("click",e=>{if(e.target.classList.contains("del-btn")||e.target.classList.contains("check-btn"))return;toggleBill(row.dataset.billId);});const cb=row.querySelector(".check-btn");if(cb)cb.addEventListener("click",ev=>{ev.stopPropagation();toggleBill(row.dataset.billId);});});
 }
 
 function toggleBill(id){const m=mk();state.bills=state.bills.map(b=>{if(b.id!==id)return b;const pm={...(b.paidMonths||{})};if(pm[m])delete pm[m];else pm[m]=true;return{...b,paidMonths:pm};});save();render();}
 function addEarning(){const amount=parseFloat(document.getElementById("earnAmount").value);if(isNaN(amount)||amount<=0)return;state.earnings.push({id:Date.now().toString(),jobType:selJob,desc:document.getElementById("earnDesc").value.trim(),amount,date:document.getElementById("earnDate").value,month:mk()});document.getElementById("earnAmount").value="";document.getElementById("earnDesc").value="";closeModal();save();render();}
 function addBill(){const name=document.getElementById("billName").value.trim();const amount=parseFloat(document.getElementById("billAmount").value);if(!name||isNaN(amount))return;state.bills.push({id:Date.now().toString(),name,amount,due:document.getElementById("billDue").value.trim(),category:document.getElementById("billCat").value,paidMonths:{}});document.getElementById("billName").value="";document.getElementById("billAmount").value="";document.getElementById("billDue").value="";closeModal();save();render();}
 function addExpense(){const name=document.getElementById("expName").value.trim();const amount=parseFloat(document.getElementById("expAmount").value);if(!name||isNaN(amount))return;state.expenses.push({id:Date.now().toString(),name,amount,date:document.getElementById("expDate").value,category:document.getElementById("expCat").value,month:mk()});document.getElementById("expName").value="";document.getElementById("expAmount").value="";closeModal();save();render();}
+
+function openCashModal(){document.getElementById("cashOnHand").value=cash.onHand||"";document.getElementById("cashBank").value=cash.bank||"";document.getElementById("cashModal").classList.remove("hidden");}
+function closeCashModal(){document.getElementById("cashModal").classList.add("hidden");}
+function saveCash(){cash.onHand=parseFloat(document.getElementById("cashOnHand").value)||0;cash.bank=parseFloat(document.getElementById("cashBank").value)||0;saveCashData();closeCashModal();render();}
 
 function switchTab(t){curTab=t;["overview","earnings","bills","expenses","flow"].forEach(x=>{const v=document.getElementById("view"+x.charAt(0).toUpperCase()+x.slice(1));const tb=document.getElementById("tab"+x.charAt(0).toUpperCase()+x.slice(1));if(v)v.classList.toggle("hidden",x!==t);if(tb)tb.classList.toggle("active",x===t);});}
 function switchSheet(s){["earn","bill","expense"].forEach((x,i)=>{document.getElementById("form"+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle("hidden",x!==s);document.getElementById("st"+i).classList.toggle("active",x===s);});const titles={earn:"LOG JOB",bill:"ADD BILL",expense:"ADD EXPENSE"};document.getElementById("sheetTitle").textContent=titles[s];}
@@ -435,8 +457,8 @@ function nextMonth(){if(curMonth===11){curMonth=0;curYear++;}else curMonth++;sav
 
 document.getElementById("fabBtn").addEventListener("click",openModal);
 document.getElementById("modal").addEventListener("click",e=>{if(e.target===document.getElementById("modal"))closeModal();});
+document.getElementById("cashModal").addEventListener("click",e=>{if(e.target===document.getElementById("cashModal"))closeCashModal();});
 load();render();
 </script>
-
 </body>
 </html>
